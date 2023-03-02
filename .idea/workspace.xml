@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="052a8eb9-bc2f-4692-8a1b-09a28c91498e" name="Changes" comment="added readme.md" />
+    <list default="true" id="052a8eb9-bc2f-4692-8a1b-09a28c91498e" name="Changes" comment="added readme.md">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gx/interview/githubTask/MyApiClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gx/interview/githubTask/RepoInfoGitHubConsumer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gx/interview/githubTask/RepoInfoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gx/interview/githubTask/RepoInfoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gx/interview/githubTask/RepoInfoEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gx/interview/githubTask/RepoInfoResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gx/interview/githubTask/RepoInfoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gx/interview/githubTask/RepoInfoConsumer.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

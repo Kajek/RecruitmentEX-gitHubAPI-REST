@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
-public class MyApiClient implements RepoInfoRepository {
+public class RepoInfoGitHubConsumer implements RepoInfoConsumer {
 
     @Value("${github.token}")
     private String token;
@@ -21,15 +21,11 @@ public class MyApiClient implements RepoInfoRepository {
         RestTemplate restTemplate = new RestTemplate();
         String apiUrl = "https://api.github.com/repos/" + userName + "/" + repoName;
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Accept", "application/vnd.github+json");
-        headers.set("Authorization", "Bearer "+ token);
-        headers.set("X-GitHub-Api-Version", "2022-11-28");
-        HttpEntity<String> request = new HttpEntity<>(headers);
+        HttpEntity<String> request = getHeaders();
 
-        ResponseEntity<RepoInfoEntity> response = restTemplate.exchange(apiUrl, HttpMethod.GET, request, RepoInfoEntity.class);
+        ResponseEntity<RepoInfoResponse> response = restTemplate.exchange(apiUrl, HttpMethod.GET, request, RepoInfoResponse.class);
         if (response.getStatusCode().is2xxSuccessful()) {
-            return Optional.ofNullable(response.getBody()).map(RepoInfoEntity::toDomain);
+            return Optional.ofNullable(response.getBody()).map(RepoInfoResponse::toDomain);
         } else if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
             return Optional.empty();
         } else {
@@ -41,20 +37,15 @@ public class MyApiClient implements RepoInfoRepository {
         RestTemplate restTemplate = new RestTemplate();
         String apiUrl = "https://api.github.com/users/" + userName + "/repos";
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Accept", "application/vnd.github+json");
-        headers.set("Authorization", "Bearer "+token);
-        headers.set("X-GitHub-Api-Version", "2022-11-28");
-        HttpEntity<String> request = new HttpEntity<>(headers);
+        HttpEntity<String> request = getHeaders();
 
-
-        ResponseEntity<List<RepoInfoEntity>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, request,
-                new ParameterizedTypeReference<List<RepoInfoEntity>>() {
+        ResponseEntity<List<RepoInfoResponse>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, request,
+                new ParameterizedTypeReference<List<RepoInfoResponse>>() {
                 });
         if (response.getStatusCode().is2xxSuccessful()) {
             return Optional.ofNullable(response.getBody())
                     .map(repoInfoEntities -> repoInfoEntities.stream()
-                            .map(RepoInfoEntity::toDomain)
+                            .map(RepoInfoResponse::toDomain)
                             .collect(Collectors.toList()))
                     .map(ReposInfo::new);
 
@@ -64,6 +55,13 @@ public class MyApiClient implements RepoInfoRepository {
             throw new RuntimeException("Failed to fetch data from github");
         }
 
+    }
+    private HttpEntity<String> getHeaders() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Accept", "application/vnd.github+json");
+        headers.set("Authorization", "Bearer " + token);
+        headers.set("X-GitHub-Api-Version", "2022-11-28");
+        return new HttpEntity<>(headers);
     }
 
 }

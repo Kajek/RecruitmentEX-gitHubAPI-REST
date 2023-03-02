@@ -15,18 +15,18 @@ import java.util.stream.Collectors;
 public class RepoInfoController {
 
 
-    private final RepoInfoRepository repoInfoRepository;
+    private final RepoInfoConsumer repoInfoConsumer;
 
     @Autowired
-    public RepoInfoController(RepoInfoRepository repoInfoRepository) {
-        this.repoInfoRepository = repoInfoRepository;
+    public RepoInfoController(RepoInfoConsumer repoInfoConsumer) {
+        this.repoInfoConsumer = repoInfoConsumer;
     }
 
     @GetMapping("/repositories/{owner}/{repositoryName}")
     public Optional<RepoInfoDto> getRepoInfo(@PathVariable String owner,
                                              @PathVariable String repositoryName) {
 
-        Optional<RepoInfo> tempRepoInfo = repoInfoRepository.getRepoInfo(owner, repositoryName);
+        Optional<RepoInfo> tempRepoInfo = repoInfoConsumer.getRepoInfo(owner, repositoryName);
         return tempRepoInfo.map(RepoInfoDto::fromDomain);
     }
 
@@ -36,7 +36,7 @@ public class RepoInfoController {
 
         Pattern pattern = Pattern.compile(regex);
 
-        Optional<ReposInfo> tempRepoInfo = repoInfoRepository.getAllUserReposInfo(owner);
+        Optional<ReposInfo> tempRepoInfo = repoInfoConsumer.getAllUserReposInfo(owner);
 
         return tempRepoInfo
                 .map(repoInfos -> repoInfos.findWithMatchingName(pattern))
@@ -47,14 +47,14 @@ public class RepoInfoController {
     @GetMapping("/repositories-oldest/{owner}")
     public Optional<RepoInfoDto> getOwnerOldestRepository(@PathVariable String owner) {
 
-        return repoInfoRepository.getAllUserReposInfo(owner).flatMap(ReposInfo::findOldestRepo)
+        return repoInfoConsumer.getAllUserReposInfo(owner).flatMap(ReposInfo::findOldestRepo)
                 .map(RepoInfoDto::fromDomain);
     }
 
     @GetMapping("/repositories-most-forked/{owner}")
     public Optional<RepoInfoDto> getMostForkedRepository(@PathVariable String owner){
 
-        return repoInfoRepository.getAllUserReposInfo(owner).flatMap(ReposInfo::findMostForkedRepo)
+        return repoInfoConsumer.getAllUserReposInfo(owner).flatMap(ReposInfo::findMostForkedRepo)
                 .map(RepoInfoDto::fromDomain);
     }
 }

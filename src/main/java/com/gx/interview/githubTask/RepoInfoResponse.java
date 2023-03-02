@@ -7,7 +7,7 @@ import java.time.OffsetDateTime;
 
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RepoInfoEntity {
+public class RepoInfoResponse {
 
     @JsonProperty("full_name")
     private String fullName;
